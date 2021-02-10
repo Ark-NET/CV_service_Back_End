@@ -1,0 +1,26 @@
+{
+  "name": "cv_service_back_end",
+  "version": "1.0.0",
+  "description": "server for CV_service_FrontEnd",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cv",
+    "service",
+    "Hyena coders",
+    "curriculum vitae",
+    "server"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ark-NET/CV_service_Back_End.git"
+  },
+  "author": "Hyena coders",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ark-NET/CV_service_Back_End/issues"
+  },
+  "homepage": "https://github.com/Ark-NET/CV_service_Back_End#readme"
+}
