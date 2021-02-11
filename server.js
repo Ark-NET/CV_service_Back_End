@@ -13,7 +13,7 @@ const mysql = require("mysql");
 
 
 
-const dbConnection = mysql.createConnection(connString);
+const dbConnection = mysql.createConnection(connString.connString);
 
 dbConnection.connect((err) => {
 
@@ -21,12 +21,12 @@ dbConnection.connect((err) => {
 
 });
 
-//Get all employee
+//Get all users
 server.get("/", (req, res) => {
 
-        dbConnection.query("SELECT * FROM companydb.employee", (err, result) => {
+        dbConnection.query("SELECT * FROM users", (err, result) => {
 
-            //console.log(result);
+            console.log(result);
             res.json(result);
             res.end();
                 
@@ -35,24 +35,25 @@ server.get("/", (req, res) => {
 });
 
 
-//Get emplyee by id
+//Get users by id
 server.get("/:id", (req, res) => {
 
-    dbConnection.query(`SELECT * FROM companydb.employee WHERE id = ${req.params.id}`, (err, result) => {
-
+    dbConnection.query(`SELECT * FROM users WHERE id = ${req.params.id}`, (err, result) => {
+        //console.dir(result);
         res.json(result);
         res.end();
             
+
     });
 
 });
 
 
-//Add emplyee 
-server.post("/employee", (req, res) => {
+//Add users 
+server.post("/users", (req, res) => {
 
   
-    dbConnection.query('INSERT INTO employee SET ?', req.body
+    dbConnection.query('INSERT INTO users SET ?', req.body
    
     , (err, result) => {
         
@@ -65,26 +66,26 @@ server.post("/employee", (req, res) => {
 });
 
 
-//Update emplyee by id
-server.put('/employee/:id', (req, res) => {
+//Update users by id
+server.put('/users/:id', (req, res) => {
 
     const id = req.params.id;
 
-    dbConnection.query('UPDATE employee SET ? WHERE id = ?', [req.body, id], (error, result) => {
+    dbConnection.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
         if (error) throw error;
 
-        res.end('Employee updated successfully.');
+        res.end('Users updated successfully.');
     }); 
 });
 
-//Delete emplyee by id
-server.delete('/employee/:id', (req, res) => {
+//Delete users by id
+server.delete('/users/:id', (req, res) => {
     const id = req.params.id;
 
-    dbConnection.query('DELETE FROM employee WHERE id = ?', id, (error, result) => {
+    dbConnection.query('DELETE FROM users WHERE id = ?', id, (error, result) => {
         if (error) throw error;
 
-        res.end('Employee deleted.');
+        res.end('Users deleted.');
     });
 });
 
