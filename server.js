@@ -50,18 +50,40 @@ server.get("/:id", (req, res) => {
 
 
 //Add users 
-server.post("/users", (req, res) => {
+server.post("/", (req, res) => {
 
   
-    dbConnection.query('INSERT INTO users SET ?', req.body
-   
+    dbConnection.query(`INSERT INTO users SET ?`,req.body[0],
+    ` INSERT INTO jobs WHERE user_id=result.insertId SET?`, req.body[1]
     , (err, result) => {
-        
-        result=true;
-        res.json(result);
+       
+      if(err)console.log(err);
+      
+        res.json(result); 
+        //console.log(result.insertId);
+
         res.end();
             
     });
+
+    //  dbConnection.query(`INSERT INTO users SET  ${req.body }`, req.body
+   
+    // , (err, result) => {
+        
+      
+    //     res.json(result);
+    //     res.end();
+            
+    // });
+    // dbConnection.query('INSERT INTO contacts SET ?', req.body
+   
+    // , (err, result) => {
+        
+    //     result=true;
+    //     res.json(result);
+    //     res.end();
+            
+    // });
 
 });
 
