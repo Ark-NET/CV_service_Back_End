@@ -19,6 +19,8 @@ dbConnection.connect((err) => {
 
 });
 
+
+
 //IsUser By LoginPassword
 server.post("/login", (req, respons) => {
 
@@ -96,70 +98,59 @@ server.post("/registration", (req, res) => {
     });
 });
 
+ 
 
 
 
-// //Add users 
-// server.post("/registration", (req, res) => {
-// var userok=req.body;
-//     dbConnection.query(`INSERT INTO users SET?`, userok
-//         // console.log(res)
-//         // `Select @lastid:=result.insertId();`+
-//         // ``, req.body[1]
-//         , (err, result) => {
-//             // var ob={
-//             //     "job": "poster",
-//             //     "work_status": "poc",
-//             //     "from_year": "2009-08-02",
-//             //     "to_year": "2020-06-05",
-//             //     "about": "yuiijkwecf?erwfhilnrf<eerfh;erf",
-//             //     "user_id":result.insertId
-//             // }
-//            // let isertID=
-//             if (err) console.log(err);
 
-//            // res.json(result);
-//             //console.log(result.insertId);
+//add userObject
+server.post("/userObject",(req,res)=>{
+ var user=req.body
 
-// userok.user_id=result.insertId
 
-//             res.end();
-//         },
-//         dbConnection.query(`INSERT INTO jobs SET?`, userok
-//         , (err, result) => {
-//             if (err) console.log(err);
-//             res.json(result);
-//             //console.log(result.insertId);
-//             res.end();
-//         })
+   // console.log("jifehfjifek")
+   // console.dir(req.body.jobs);
 
-//     );
 
-//     //  dbConnection.query(`INSERT INTO users SET  ${req.body }`, req.body
-//     // , (err, result) => {
-//     //     res.json(result);
-//     //     res.end();      
-//     // });
-//     // dbConnection.query('INSERT INTO contacts SET ?', req.bod
-//     // , (err, result) => {
-//     //     result=true;
-//     //     res.json(result);
-//     //     res.end();        
-//     // });
+// res.json(console.log("jifehfjifek"));
+ res.end();
+});
 
-// });
+
+
+
+
 
 
 //Update users by id
-server.put('/users/:id', (req, res) => {
+server.put('/UpdateObj', (req, res) => {
 
-    const id = req.params.id;
-
+    const userObj = req.body;
+ 
     dbConnection.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
         if (error) throw error;
 
         res.end('Users updated successfully.');
     });
+  
+    dbConnection.query(`SELECT * FROM jobs WHERE user_id = ${req.params.id}`, (err, result) => {
+
+        userById.jobs = result;
+
+    });
+    dbConnection.query(`SELECT * FROM links WHERE user_id = ${req.params.id}`, (err, result) => {
+
+        userById.links = result;
+
+    });
+    dbConnection.query(`SELECT * FROM education WHERE user_id = ${req.params.id}`, (err, result) => {
+
+        userById.education = result;
+        res.json(userById);
+        res.end();
+
+    });
+
 });
 
 //Delete users by id
@@ -180,3 +171,62 @@ const startupCallback = function () {
 };
 
 const service = server.listen(SERVER_PORT, startupCallback);
+
+
+var ou = [
+    {
+       "id":0,
+        "job": "ServiseCAr",
+        "work_status": "Developer",
+        "from_year": "2011-02-15",
+        "to_year": "2014-05-05",
+        "about": "big DATABASE",
+        "user_id": 1
+    },
+    {
+        "id":0,
+        "job": "RENAULT_SERVISE",
+        "work_status": "developer",
+        "from_year": "2014-08-31",
+        "to_year": "2015-12-31",
+        "about": "Work with Client",
+        "user_id": 1
+    },
+    {
+        "id":0,
+        "job": "BMW_Service",
+        "work_status": "developer",
+        "from_year": "2017-06-03",
+        "to_year": "2020-03-02",
+        "about": "e-cabinet Client",
+        "user_id": 1
+    }
+]
+ou.forEach(element => {
+    console.dir(element);
+        dbConnection.query(`INSERT INTO jobs SET?`, element,
+            (err, result) => {
+           console.dir(result);
+
+        
+        })   
+})
+
+// dbConnection.query(`SELECT * FROM jobs WHERE id = 1`,(err,result)=>{
+//    if(!result){
+//     dbConnection.query(`INSERT INTO jobs SET?`, userok
+//             , (err, result) => {
+//                 if (err) console.log(err);
+//                 res.json(result);
+//                 //console.log(result.insertId);
+//                 res.end();
+//             })
+//    }
+//    else{
+//     dbConnection.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
+//         if (error) throw error;
+
+//         res.end('Users updated successfully.');
+//     });
+//    }
+// })
