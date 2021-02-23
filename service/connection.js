@@ -1,5 +1,5 @@
 module.exports.connString = {
-
+    
     host: "localhost",
     user: "root",
     password: "123456",

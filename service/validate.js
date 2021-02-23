@@ -1,1 +1,3 @@
-//проверки тут
+//проверки
+const validator = require("validator");
+
