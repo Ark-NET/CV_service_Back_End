@@ -1,5 +1,4 @@
 
-
 module.exports.getJobs = function getJobs(obj, dbConnection) {
 
     dbConnection.query(`SELECT * FROM service_cv.jobs WHERE user_id = ${obj.id};`, (err, result) => {
@@ -8,6 +7,7 @@ module.exports.getJobs = function getJobs(obj, dbConnection) {
 
     });
 }
+
 
 module.exports.getLinks = function getLinks(obj, dbConnection) {
 
@@ -19,6 +19,7 @@ module.exports.getLinks = function getLinks(obj, dbConnection) {
     });
 }
 
+
 module.exports.getEducation = function getEducation(obj, dbConnection) {
     //var education;
     dbConnection.query(`SELECT * FROM service_cv.education WHERE user_id = ${obj.id};`, (err, result) => {
@@ -28,7 +29,6 @@ module.exports.getEducation = function getEducation(obj, dbConnection) {
     ////  console.log(education);
     //return education;
 }
-
 
 
 
@@ -43,8 +43,6 @@ module.exports.name = function name(obj, dbConnection) {
     console.log(links);
 
     //obj.jobs.filter()
-
-
 
 }
 

@@ -86,10 +86,10 @@ server.get("/", (req, res) => {
 });
 
 
-function escapeRegExp(string){
-    return string.replace(/T.+Z/, ""); 
-  }
-  console.log(escapeRegExp("2008-05-01T21:00:00.000Z"));
+// function escapeRegExp(string){
+//     return string.replace(/T.+Z/, ""); 
+//   }
+//   console.log(escapeRegExp("2008-05-01T21:00:00.000Z"));
 
 //Get user by id
 server.get("/:id", (req, res) => {
@@ -121,9 +121,6 @@ server.get("/:id", (req, res) => {
 //console.log(result);
 userById.jobs = result;
 
-       
-        
-
     });
     dbConnection.query(`SELECT * FROM service_cv.links WHERE user_id = ${req.params.id};`, (err, result) => {
 
@@ -135,13 +132,7 @@ userById.jobs = result;
         userById.education = result;
        // console.log(userById);
 
-       userById.jobs.forEach(element => {
-
-        element.from_year = element.from_year.replace(/T.+Z/, "");
-    
-    console.log(   element.from_year);
-       
-    });
+      
         res.json(userById);
         res.end();
         
