@@ -25,10 +25,11 @@
   "homepage": "https://github.com/Ark-NET/CV_service_Back_End#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "date-and-time": "^0.14.2",
-    "dateformat": "^4.5.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "md5": "^2.3.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "validator": "^13.5.2"
   }
 }

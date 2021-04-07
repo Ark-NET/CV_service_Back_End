@@ -6,50 +6,68 @@ module.exports.getJobs = function getJobs(obj, dbConnection) {
         return result;
 
     });
+
 }
+
 
 
 module.exports.getLinks = function getLinks(obj, dbConnection) {
 
-    dbConnection.query(`SELECT * FROM service_cv.links WHERE user_id = ${obj.id};`, (err, result) => {
+    dbConnection.query(`SELECT * FROM service_cv.links WHERE user_id = ${obj.id};`,
 
-        console.log(result);
-        return result;
+        (err, result) => {
 
-    });
+            return result;
+
+        });
+
 }
 
 
 module.exports.getEducation = function getEducation(obj, dbConnection) {
-    //var education;
-    dbConnection.query(`SELECT * FROM service_cv.education WHERE user_id = ${obj.id};`, (err, result) => {
-        // console.log(result);
-        return result;
-    });
-    ////  console.log(education);
-    //return education;
+
+    dbConnection.query(`SELECT * FROM service_cv.education WHERE user_id = ${obj.id};`,
+
+        (err, result) => {
+
+            return result;
+
+        });
+
 }
 
 
+module.exports.insertUser = function insertUser(obj, response, dbConnection) {
 
-module.exports.name = function name(obj, dbConnection) {
+    dbConnection.query(`INSERT INTO users(login,password,full_name,email,phone,position,face)
+    VALUES (
+            "${obj.login}", 
+            "${obj.password}", 
+            "${obj.full_name}", 
+            "${obj.email}", 
+            "${obj.phone}",
+            "${obj.position}", 
+            "${obj.face}")`,
+        (err, result) => {
 
-    // let education=funcForDB.getEducation(obj,dbConnection); 
-    let jobs = funcForDB.getJobs(obj, dbConnection);
-    let links = funcForDB.getLinks(obj, dbConnection);
+            if (err) {
 
-    //console.log(education);
-    console.log(jobs);
-    console.log(links);
+                response.json({ "result": err });
 
-    //obj.jobs.filter()
+            }
+            else {
 
+                response.json({ "result": true, "id": result.insertId });
+
+            }
+
+            response.end();
+
+        });
 }
 
 
 module.exports.insertUpdateUser = function insertUpdateUser(obj, dbConnection) {
-    // console.log("Привет");
-    // console.dir(obj);
 
     if (obj.id > 0) {
         dbConnection.query(`UPDATE users
@@ -59,12 +77,13 @@ module.exports.insertUpdateUser = function insertUpdateUser(obj, dbConnection) {
             full_name="${obj.full_name}", 
             email="${obj.email}",
             phone="${obj.phone}",
+            position = "${obj.position}",
             face="${obj.face}"
-            WHERE id=${obj.id};`, (err, result) => {
-            console.log("UPDATE users" + err);
-            //res.json({ "result": true });        
-            //res.end();
-        });
+            WHERE id=${obj.id};`,
+            (err, result) => {
+                console.log("UPDATE users: " + err);
+
+            });
     }
     else {
         dbConnection.query(`INSERT INTO users(  
@@ -74,18 +93,20 @@ module.exports.insertUpdateUser = function insertUpdateUser(obj, dbConnection) {
             full_name, 
             email, 
             phone, 
+            position,
             face)
             VALUES (
                 "${obj.login}", 
                     "${obj.password}", 
                     "${obj.full_name}", 
                     "${obj.email}", 
-                    "${obj.phone}", 
+                    "${obj.phone}",
+                    "${obj.position}", 
                     "${obj.face}")`,
             (err, result) => {
-                console.dir("INSERT INTO users" + err);
-                //res.json({ "result": true });        
-                //res.end();
+
+                console.dir("INSERT INTO users: " + err);
+
             });
 
     }
@@ -94,13 +115,10 @@ module.exports.insertUpdateUser = function insertUpdateUser(obj, dbConnection) {
 
 
 module.exports.insertUpdateJobs = function insertUpdateJobs(obj, dbConnection) {
-    // console.dir(obj.id);
 
     obj.jobs.forEach(element => {
 
         if (element.id > 0) {
-
-            // console.log(element.id > 0);
 
             dbConnection.query(`UPDATE jobs
             SET
@@ -111,14 +129,16 @@ module.exports.insertUpdateJobs = function insertUpdateJobs(obj, dbConnection) {
             to_year="${element.to_year}",
             about="${element.about}",
             user_id=${obj.id}
-            WHERE id=${element.id};`, (err, result) => {
-                console.log("UPDATE jobs" + err);
-                //res.json({ "result": true });        
-                //res.end();
-            });
+            WHERE id=${element.id};`,
+                (err, result) => {
+
+                    console.log("UPDATE jobs: " + err);
+
+                });
 
         }
         else {
+
             dbConnection.query(`INSERT INTO jobs(
                 job,
                 work_status,
@@ -133,9 +153,9 @@ module.exports.insertUpdateJobs = function insertUpdateJobs(obj, dbConnection) {
                         "${element.about}",
                         "${obj.id}") `,
                 (err, result) => {
-                    console.log("INSERT INTO jobs" + err);
-                    //res.json({ "result": true });        
-                    //res.end();                              
+
+                    console.log("INSERT INTO jobs: " + err);
+
                 });
         }
     })
@@ -147,6 +167,7 @@ module.exports.insertUpdateEducation = function insertUpdateEducation(obj, dbCon
     obj.education.forEach(element => {
 
         if (element.id > 0) {
+
             dbConnection.query(`UPDATE education
             SET
             name="${element.name}", 
@@ -155,14 +176,16 @@ module.exports.insertUpdateEducation = function insertUpdateEducation(obj, dbCon
             to_year="${element.to_year}",
             about="${element.about}",
             user_id="${obj.id}"
-            WHERE id=${element.id};`, (err, result) => {
-                console.log("UPDATE education" + err);
-                //res.json({ "result": true });        
-                //res.end();
-            });
+            WHERE id=${element.id};`,
+                (err, result) => {
+
+                    console.log("UPDATE education: " + err);
+
+                });
 
         }
         else {
+
             dbConnection.query(`INSERT INTO education(
                 name,
                 specialization,
@@ -177,9 +200,9 @@ module.exports.insertUpdateEducation = function insertUpdateEducation(obj, dbCon
                         "${element.about}",
                         "${obj.id}") `,
                 (err, result) => {
-                    console.log("INSERT INTO education" + err);
-                    //res.json({ "result": true });        
-                    //res.end();                              
+
+                    console.log("INSERT INTO education: " + err);
+
                 });
         }
     })
@@ -192,19 +215,22 @@ module.exports.insertUpdateLinks = function insertUpdateLinks(obj, dbConnection)
     obj.links.forEach(element => {
 
         if (element.id > 0) {
+
             dbConnection.query(`UPDATE links
             SET
             name="${element.name}", 
             link="${element.link}", 
             user_id="${obj.id}"
-            WHERE id=${element.id};`, (err, result) => {
-                console.log("`UPDATE links" + err);
-                //res.json({ "result": true });        
-                //res.end();
-            });
+            WHERE id=${element.id};`,
+                (err, result) => {
+
+                    console.log("UPDATE links: " + err);
+
+                });
 
         }
         else {
+
             dbConnection.query(`INSERT INTO links(
                 name,
                 link,
@@ -213,9 +239,9 @@ module.exports.insertUpdateLinks = function insertUpdateLinks(obj, dbConnection)
                         "${element.link}",
                         "${obj.id}")`,
                 (err, result) => {
-                    console.log("INSERT INTO link" + err);
-                    //res.json({ "result": true });        
-                    //res.end();                              
+
+                    console.log("INSERT INTO links: " + err);
+
                 });
         }
     })
@@ -225,34 +251,33 @@ module.exports.insertUpdateLinks = function insertUpdateLinks(obj, dbConnection)
 
 module.exports.deleteJob = function deleteJob(obj, dbConnection) {
 
+    dbConnection.query("DELETE FROM jobs WHERE id=?", obj.params.id,
+        (err, result) => {
 
-    //     dbConnection.query(`SELECT * FROM service_cv.jobs WHERE user_id = ${obj.id};`, (err, result) => {
-    //         // return result;
-    //         //  obj.jobs.filter( obj.jobs.id!=result.id)
-    //    });
-    //     if (obj.jobs.length > 0) {
-    //         obj.jobs.forEach(element => {
-    //             dbConnection.query("DELETE FROM jobs WHERE id=?", element, (err, result) => {
-    //                 if (err) console.log(err);
-    //             })
-    //         })
-    //     }
-    dbConnection.query("DELETE FROM jobs WHERE id=?", obj.params.id, (err, result) => {
-        if (err) console.log(err);
-    })
+            if (err) console.log(err);
+
+        })
 }
 
 
 module.exports.deleteLink = function deleteLink(obj, dbConnection) {
-    dbConnection.query("DELETE FROM links WHERE id=?", obj.params.id, (err, result) => {
-        if (err) console.log(err);
-    })
+
+    dbConnection.query("DELETE FROM links WHERE id=?", obj.params.id,
+        (err, result) => {
+
+            if (err) console.log(err);
+
+        })
 
 }
 
 
 module.exports.deleteEducation = function deleteEducation(obj, dbConnection) {
-    dbConnection.query("DELETE FROM education WHERE id=?", obj.params.id, (err, result) => {
-        if (err) console.log(err);
-    })
+
+    dbConnection.query("DELETE FROM education WHERE id=?", obj.params.id,
+        (err, result) => {
+
+            if (err) console.log(err);
+
+        })
 }
